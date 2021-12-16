@@ -15,15 +15,30 @@ public class CityService {
 
 	@Autowired
 	private ICityRepository cityRepository;
+
+	private Double toFahrenheit(double degrees){
+		return ((degrees * 9)/5) + 32;
+	}
 	
-	public Optional<City> getById(long id) {
-		
-		return cityRepository.findById(id);
+	public City getById(long id) {
+		Optional<City> found = cityRepository.findById(id);
+		if (found.isPresent()){
+			City city = found.get();
+			city.setFahrenheit(toFahrenheit(city.getWeather()));
+			return city;
+		}
+		return null;
 	}
 
 	public List<City> getAll() {
 		
-		return cityRepository.findAll();
+		List<City> cities = cityRepository.findAll();
+
+		for(City city:cities) {
+			city.setFahrenheit(toFahrenheit(city.getWeather()));
+		}
+
+		return cities;
 	}
 
 	public boolean existsByName(String name) {
@@ -35,6 +50,5 @@ public class CityService {
 		City city =  new City(dto.getName(), dto.getWeather());
 		return cityRepository.save(city);
 	}
-	
 
 }
