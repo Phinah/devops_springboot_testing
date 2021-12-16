@@ -45,14 +45,6 @@ public class CityServiceTest {
                 new City(2, "Nyabihu", 26, 10)));
         assertEquals(75.2, cityService.getAll().get(0).getFahrenheit());
     }
-    @Test
-    public void getAllCities(){
-        List<City> cities = new ArrayList();
-        cities.add(new City());
-        given(cityRepositoryMock.findAll()).willReturn(cities);
-        assertEquals(cityService.getAll(), cities);
-        verify(cityRepositoryMock).findAll();
-    }
 
     @Test
     public void getCity_ById(){
@@ -60,5 +52,15 @@ public class CityServiceTest {
         City city = new City(id,"Kigali",24,5);
         when(cityRepositoryMock.findById(id)).thenReturn(Optional.of(city));
         assertEquals(75.2,cityService.getById(id).getFahrenheit());
+    }
+    @Test
+    public void save_success() {
+        CreateCityDTO dto = new CreateCityDTO();
+        dto.setName("Nyagatare");
+        dto.setWeather(28);
+        City city = new City(dto.getName(), dto.getWeather());
+        when(cityRepositoryMock.save(city)).thenReturn(city);
+        City createCity = cityService.save(dto);
+        assertTrue(createCity.getName() == "Nyagatare");
     }
 }
