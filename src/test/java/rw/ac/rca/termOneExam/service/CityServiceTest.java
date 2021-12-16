@@ -31,7 +31,7 @@ public class CityServiceTest {
     private CityService  cityService;
 
     @Test
-    public void save_newCity() {
+    public void save_newCity_success() {
         CreateCityDTO dto = new CreateCityDTO();
         dto.setName("Kigali");
         dto.setWeather(24);
@@ -50,10 +50,17 @@ public class CityServiceTest {
     }
 
     @Test
-    public void getCity_ById(){
+    public void getCity_ById_success(){
         Long id = 104L;
         City city = new City(id,"Kigali",24,5);
         when(cityRepositoryMock.findById(id)).thenReturn(Optional.of(city));
         assertEquals(75.2,cityService.getById(id).getFahrenheit());
+    }
+    @Test
+    public void getCity_ById_fail() {
+        Long id = 1900L;
+        when(cityRepositoryMock.findById(id)).thenReturn(Optional.empty());
+        City city = cityService.getById(id);
+        assertTrue(city == null);
     }
 }
