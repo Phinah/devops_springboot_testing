@@ -1,9 +1,11 @@
 package rw.ac.rca.termOneExam.service;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import rw.ac.rca.termOneExam.domain.City;
 import rw.ac.rca.termOneExam.dto.CreateCityDTO;
 import rw.ac.rca.termOneExam.repository.ICityRepository;
@@ -19,6 +21,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CityServiceTest {
 
     @Mock
@@ -52,15 +55,5 @@ public class CityServiceTest {
         City city = new City(id,"Kigali",24,5);
         when(cityRepositoryMock.findById(id)).thenReturn(Optional.of(city));
         assertEquals(75.2,cityService.getById(id).getFahrenheit());
-    }
-    @Test
-    public void save_success() {
-        CreateCityDTO dto = new CreateCityDTO();
-        dto.setName("Nyagatare");
-        dto.setWeather(28);
-        City city = new City(dto.getName(), dto.getWeather());
-        when(cityRepositoryMock.save(city)).thenReturn(city);
-        City createCity = cityService.save(dto);
-        assertTrue(createCity.getName() == "Nyagatare");
     }
 }
